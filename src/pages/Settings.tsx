@@ -75,6 +75,7 @@ const Settings = () => {
   const user = useStore((state) => state.user);
   const recalc = useStore((state) => state.recalcCalories);
   const updateUser = useStore((state) => state.updateUser);
+  const setApiKey = useStore((state) => state.setApiKey);
   const { t } = useTranslation();
 
   const [editModal, setEditModal] = useState<EditModalState>({
@@ -116,7 +117,8 @@ const Settings = () => {
     const numericFields = ["weight", "height", "age", "weightgoal", "weeklykg"];
     const finalValue = numericFields.includes(field) ? Number(value) : value;
 
-    updateUser?.({ [field]: finalValue });
+    if (field == "apiKey") setApiKey(value);
+    else updateUser?.({ [field]: finalValue });
     closeEditModal();
   };
 
@@ -278,6 +280,14 @@ const Settings = () => {
     },
   ];
 
+  const apiKey: SettingsField = {
+    key: "apiKey",
+    label: t("steps.api_key.label"),
+    value: t("steps.api_key.label"),
+    type: "input",
+    onClick: () => openEditModal("apiKey", "", "input"),
+  };
+
   const fieldConfig = getFieldConfig(editModal.field);
 
   const renderEditableField = (field: SettingsField) => (
@@ -380,6 +390,7 @@ const Settings = () => {
       </Accordion>
 
       <ul className="flex flex-col gap-3">
+        {renderEditableField(apiKey)}
         <li className={STATIC_ITEM_CLASS}>
           <p>{t("settings.language")}</p>
           <LanguageSelect />
