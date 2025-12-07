@@ -93,6 +93,9 @@
     "name_input_title": "Ismingizni kiriting",
     "years": "yosh",
     "accordion_title1": "Shaxsiy ma'lumotlar",
-    "accordion_title2": "Ovqalanish ma'lumotlari"
-  }
+    "accordion_title2": "Ovqalanish ma'lumotlari",
+    "edit": "Tahrirlash"
+  },
+  "cancel": "Bekor qilish",
+  "save": "Saqlash"
 }

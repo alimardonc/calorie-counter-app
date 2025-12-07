@@ -93,6 +93,9 @@
     "name_input_title": "Введите ваше имя",
     "years": "лет",
     "accordion_title1": "Личная информация",
-    "accordion_title2": "Информация о питании"
-  }
+    "accordion_title2": "Информация о питании",
+    "edit": "Изменить"
+  },
+  "cancel": "Отмена",
+  "save": "Сохранить"
 }

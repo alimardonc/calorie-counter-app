@@ -28,6 +28,7 @@ interface CalorieStore {
 
   initUserStats: (day: string) => void;
   recalcCalories: () => void;
+  updateUser: (updates: Partial<IUserInfo>) => void;
 }
 
 const prompt = `
@@ -65,6 +66,12 @@ export const useStore = create<CalorieStore>()(
           nutFact: getNutFact(user),
         });
       },
+
+      updateUser: (updates: Partial<IUserInfo>) =>
+        set((state) => ({
+          ...state,
+          user: state.user ? { ...state.user, ...updates } : state.user,
+        })),
 
       clearUser: () =>
         set({

@@ -93,6 +93,9 @@
     "name_input_title": "Enter your name",
     "years": "years",
     "accordion_title1": "Personal Information",
-    "accordion_title2": "Nutritional Information"
-  }
+    "accordion_title2": "Nutritional Information",
+    "edit": "Edit"
+  },
+  "cancel": "Cancel",
+  "save": "Save"
 }
