@@ -1,10 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { AiClient } from "@/lib/ai";
+import analyzeImage from "@/lib/ai";
 import { extractJson } from "@/lib/parse";
 import { getNutFact } from "@/lib/utils";
 import { v4 as uuid } from "uuid";
-import i18n from "@/i18n";
 import type { IFood, INutritionalFact, IUserInfo } from "@/types";
 import { useCalendarStore } from "./use-calendar";
 
@@ -12,7 +11,6 @@ interface CalorieStore {
   user: IUserInfo | null;
   nutFact: INutritionalFact;
   apiKey: string;
-  ai: AiClient | null;
   isAnalyzing: boolean;
 
   foodStats: Record<string, IFood[]>;
@@ -31,33 +29,18 @@ interface CalorieStore {
   updateUser: (updates: Partial<IUserInfo>) => void;
 }
 
-const prompt = `
-You must respond strictly in JSON. No text. No markdown.
-
-{
-  "foodName": "string | null",
-  "calories": number,
-  "protein": number,
-  "fat": number,
-  "carbs": number,
-  "healthScore": number
-}
-(foodName must be in language: ${i18n.language})
-`;
-
 export const useStore = create<CalorieStore>()(
   persist(
     (set, get) => ({
       user: null,
       nutFact: { calories: 0, protein: 0, carbs: 0, fat: 0 },
       apiKey: "",
-      ai: null,
       isAnalyzing: false,
       foodStats: {},
       userStats: {},
 
       setApiKey: (key) => {
-        set({ apiKey: key, ai: new AiClient(key) });
+        set({ apiKey: key });
       },
 
       setUser: (user) => {
@@ -82,13 +65,13 @@ export const useStore = create<CalorieStore>()(
         }),
 
       analyzeFood: async (image, type) => {
-        const ai = get().ai;
-        if (!ai) throw new Error("API key not set");
+        const apiKey = get().apiKey;
+        if (!apiKey) throw new Error("API key not set");
 
         set({ isAnalyzing: true });
 
         try {
-          const text = await ai.analyzeImage(image, type, prompt);
+          const text = await analyzeImage(image, type, apiKey);
           const items = extractJson(text + "");
 
           items.forEach((food) =>
