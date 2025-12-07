@@ -25,7 +25,7 @@ const Navigation = () => {
   ];
 
   return (
-    <div className="flex justify-between items-center h-[62px]">
+    <div className="flex justify-between items-center h-[62px] z-100">
       {data.map((e) => (
         <div key={e.id} className="w-full">
           {e.type === "btn" ? (

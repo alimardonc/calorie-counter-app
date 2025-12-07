@@ -64,6 +64,12 @@ const CLICKABLE_ITEM_CLASS =
   "flex justify-between items-center cursor-pointer hover:bg-accent/50 p-2 rounded-md transition-colors";
 const STATIC_ITEM_CLASS = "flex justify-between items-center p-2";
 
+const goals = {
+  "Weight Loss": "loss",
+  "Muscle Gain": "gain",
+  Maintenance: "maintenance",
+};
+
 const Settings = () => {
   const nutFact = useStore((state) => state.nutFact);
   const user = useStore((state) => state.user);
@@ -228,7 +234,7 @@ const Settings = () => {
       key: "goal",
       label: t("steps.goal.title"),
       value: t(
-        `steps.goal.content.${user?.goal.toLowerCase() || "steps.goal.content.loss"}` as
+        `steps.goal.content.${goals[user?.goal || "Maintenance"] || "steps.goal.content.loss"}` as
           | `steps.goal.content.loss`
           | `steps.goal.content.maintenance`
           | `steps.goal.content.gain`,
@@ -307,7 +313,7 @@ const Settings = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto overflow-x-hidden">
+    <div className="flex flex-col gap-4 flex-1 h-full overflow-y-auto overflow-x-hidden">
       <h2 className="text-2xl font-bold">{t("nav.settings")}</h2>
 
       <div
