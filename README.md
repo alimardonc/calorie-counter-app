@@ -1,73 +1,32 @@
-# React + TypeScript + Vite
+# Lumaro — Open-source Food Nutrition Analyzer (PWA)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Lumaro is a free, open-source progressive web app that analyzes food nutrition from a photo using **Gemini Vision**.  
+Most existing apps are paid and still not fully accurate, so Lumaro aims to provide a simple, privacy-friendly, local-first alternative.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** https://lumaro.app  
+📦 **PWA install guides:**  
+• Android — https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Installing#android  
+• iOS — https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Installing#ios  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Photo-based nutrition analysis** (calories, proteins, fats, carbs, etc.)
+- **Powered by Gemini Vision**  
+- **Local-first** — all user data is stored locally  
+- **No backend, no accounts**  
+- **Free to use** (within free Gemini API limits)  
+- **PWA** — works as an installable mobile/desktop app  
+- Simple, clean UI  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🔒 Privacy
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Lumaro is designed with privacy in mind:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- No images or nutrition data are sent anywhere besides the Gemini API call  
+- No user accounts  
+- No cloud storage  
+- Only anonymous visit analytics are collected
