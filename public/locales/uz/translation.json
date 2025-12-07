@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "home": "Bosh sahifa",
+    "settings": "Sozlamalar"
+  },
+  "nutfact": {
+    "calories": "Kaloriya",
+    "protein": "Oqsil",
+    "carbs": "Uglevodlar",
+    "fat": "Yog‘lar"
+  },
+  "info": {
+    "left": "qoldi",
+    "over": "ortiq"
+  },
+  "g": "g",
+  "kg": "kg",
+  "cm": "sm",
+  "kcal": "kkal",
+  "daily": "Kunlik",
+  "steps": {
+    "title": "Kaloriya hisoblash endi oson",
+    "get_started": "Boshlash",
+    "continue": "Davom etish",
+    "analyze": "Tahlil qilish",
+    "gender": {
+      "title": "Jinsingizni tanlang",
+      "male": "Erkak",
+      "female": "Ayol"
+    },
+    "workouts": {
+      "title": "Haftasiga necha marta mashq qilasiz?",
+      "0": "Deyarli mashq qilmayman",
+      "2-3": "Ba'zan",
+      "4-5": "Haftasiga bir necha bor",
+      "6+": "Professional sportchi"
+    },
+    "height": {
+      "title": "Bo'yingizni kiriting",
+      "label": "Bo'yingiz (sm)"
+    },
+    "weight": {
+      "title": "Vazningizni kiriting",
+      "label": "Vazningiz (kg)"
+    },
+    "age": {
+      "title": "Yoshingizni kiriting",
+      "label": "Yoshingiz"
+    },
+    "goal": {
+      "title": "Maqsadingiz",
+      "content": {
+        "loss": "Vazn kamaytirish",
+        "gain": "Mushak massasi oshirish",
+        "maintenance": "Vaznni saqlash"
+      }
+    },
+    "weightgoal": {
+      "title": "Maqsadli vazningiz",
+      "label": "Qanday vaznga erishmoqchisiz"
+    },
+    "weeklykg": {
+      "title": "Qancha vazn",
+      "gain": "yig'moqchisiz",
+      "loss": "yoqotmoqchisiz",
+      "title2": "haftasiga?",
+      "label": "Haftasiga yig'moqchi bo'lgan vazningizni tanlang"
+    },
+    "api_key": {
+      "title": "Gemini API kalitingizni shu yerga joylang",
+      "label": "API kalit",
+      "description": "API kalitingizni shu yerda olishingiz mumkin"
+    }
+  },
+  "health_score": "Salomatlik ko'rsatkichi",
+  "fix_results": "Natijalarni tuzatish",
+  "done": "Yaxshi",
+  "delete": "O'chirish",
+  "descriptionof": "Tavsif",
+  "settings": {
+    "cr_weight": "Vazningiz",
+    "cr_height": "Bo'yingiz",
+    "weeks": "haftalar",
+    "title_weeks_needed": "Maqsadiga erishish uchun",
+    "language": "Til",
+    "recalculate": "Qayta hisoblash"
+  }
+}

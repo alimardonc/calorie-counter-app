@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "home": "Home",
+    "settings": "Settings"
+  },
+  "nutfact": {
+    "calories": "Calories",
+    "protein": "Protein",
+    "carbs": "Carbs",
+    "fat": "Fat"
+  },
+  "info": {
+    "left": "left",
+    "over": "over"
+  },
+  "g": "g",
+  "kg": "kg",
+  "cm": "cm",
+  "kcal": "kcal",
+  "daily": "Daily",
+  "steps": {
+    "title": "Calorie tracking made easy",
+    "get_started": "Get Started",
+    "continue": "Continue",
+    "analyze": "Analyze",
+    "gender": {
+      "title": "Choose your Gender",
+      "male": "Male",
+      "female": "Female"
+    },
+    "workouts": {
+      "title": "How many workouts do you do per week?",
+      "0": "I hardly exercise",
+      "2-3": "Sometimes",
+      "4-5": "Several times a week",
+      "6+": "Professional athlete"
+    },
+    "height": {
+      "title": "Write your height",
+      "label": "Your height in cm"
+    },
+    "weight": {
+      "title": "Write your weight",
+      "label": "Your weight in kg"
+    },
+    "age": {
+      "title": "Write your age",
+      "label": "Your age"
+    },
+    "goal": {
+      "title": "Your goal",
+      "content": {
+        "loss": "Weight Loss",
+        "gain": "Muscle Gain",
+        "maintenance": "Maintenance weight"
+      }
+    },
+    "weightgoal": {
+      "title": "Your weight goal",
+      "label": "Write your weight goal in kg"
+    },
+    "weeklykg": {
+      "title": "How much weight do you want to",
+      "gain": "gain",
+      "loss": "loss",
+      "title2": "per week?",
+      "label": "Slide the range to select"
+    },
+    "api_key": {
+      "title": "Paste here your gemini API key",
+      "label": "api key",
+      "description": "You can get your api key from"
+    }
+  },
+  "health_score": "Health Score",
+  "fix_results": "Fix Results",
+  "done": "Done",
+  "delete": "Delete",
+  "descriptionof": "Description of",
+  "settings": {
+    "cr_weight": "Current weight",
+    "cr_height": "Current height",
+    "weeks": "weeks",
+    "title_weeks_needed": "Weeks needed to reach goal weight",
+    "language": "Language",
+    "recalculate": "Recalculate"
+  }
+}
