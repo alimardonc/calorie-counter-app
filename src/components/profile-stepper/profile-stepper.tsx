@@ -30,7 +30,7 @@ const ProfileStepper = () => {
 
   if (step === steps.length) {
     const userinfo = selected as IUserInfo;
-    return <Analyzing userinfo={userinfo} />;
+    return <Analyzing userinfo={userinfo} api_key={selected.api_key + ""} />;
   }
 
   if (welcome) {

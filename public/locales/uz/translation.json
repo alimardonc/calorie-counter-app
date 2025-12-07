@@ -1,4 +1,10 @@
 {
+  "loader": {
+    "title1": "Kundalik kaloriya iste'molini tahlil qilish",
+    "title2": "Oqsil iste'molini hisoblash",
+    "title3": "Aktivlik ma'lumotlarini ko'rish",
+    "title4": "Tahlil tugadi!"
+  },
   "nav": {
     "home": "Bosh sahifa",
     "settings": "Sozlamalar"
@@ -73,7 +79,7 @@
     }
   },
   "health_score": "Salomatlik ko'rsatkichi",
-  "fix_results": "Natijalarni tuzatish",
+  "fix_results": "Tuzatish",
   "done": "Yaxshi",
   "delete": "O'chirish",
   "descriptionof": "Tavsif",
@@ -83,6 +89,10 @@
     "weeks": "haftalar",
     "title_weeks_needed": "Maqsadiga erishish uchun",
     "language": "Til",
-    "recalculate": "Qayta hisoblash"
+    "recalculate": "Qayta hisoblash",
+    "name_input_title": "Ismingizni kiriting",
+    "years": "yosh",
+    "accordion_title1": "Shaxsiy ma'lumotlar",
+    "accordion_title2": "Ovqalanish ma'lumotlari"
   }
 }

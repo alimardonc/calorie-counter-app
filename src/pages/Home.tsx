@@ -4,11 +4,11 @@ import InformationCards from "@/components/information-cards";
 
 const Home = () => {
   return (
-    <div>
+    <>
       <WeekCalendar />
       <InformationCards />
       <Foods />
-    </div>
+    </>
   );
 };
 

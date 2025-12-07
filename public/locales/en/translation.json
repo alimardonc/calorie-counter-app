@@ -1,4 +1,10 @@
 {
+  "loader": {
+    "title1": "Analyzing daily calories",
+    "title2": "Calculating protein intake",
+    "title3": "Reviewing activity data",
+    "title4": "Analysis complete!"
+  },
   "nav": {
     "home": "Home",
     "settings": "Settings"
@@ -83,6 +89,10 @@
     "weeks": "weeks",
     "title_weeks_needed": "Weeks needed to reach goal weight",
     "language": "Language",
-    "recalculate": "Recalculate"
+    "recalculate": "Recalculate",
+    "name_input_title": "Enter your name",
+    "years": "years",
+    "accordion_title1": "Personal Information",
+    "accordion_title2": "Nutritional Information"
   }
 }

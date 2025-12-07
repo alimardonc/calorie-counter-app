@@ -18,13 +18,13 @@ const Card = ({ title, stat, icon, color, goal }: CardProps) => {
   return (
     <div
       className={cn(
-        "border rounded-md flex flex-col gap-2.5 w-30 max-w-30 py-2 bg-card",
+        "border rounded-md flex flex-col gap-2.5 w-full max-w-30 py-2 bg-card",
         isOver && "bg-red-950",
         isFull && "bg-green-950",
       )}
     >
       <div className="ml-3">
-        <p className="text-2xl font-bold">
+        <p className="text-2xl max-sm:text-xl font-bold">
           {isOver ? stat : getDisplayStat(stat, goal)}
           {t("g")}
         </p>{" "}

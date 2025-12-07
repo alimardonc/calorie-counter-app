@@ -2,14 +2,6 @@ import { WebCamera, type WebCameraHandler } from "@shivantra/react-web-camera";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { filetoBase64 } from "@/lib/utils";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
 import ScanCorners from "./ui/scan-corners";
 import { useTranslation } from "react-i18next";
 import { IoSparklesSharp } from "react-icons/io5";
@@ -18,11 +10,10 @@ import { XIcon } from "lucide-react";
 
 interface IProps {
   isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
   handleAnalyze: (image: string, imageType: string) => void;
 }
 
-const ImageCapture = ({ isOpen, onOpenChange, handleAnalyze }: IProps) => {
+const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
   const cameraHandler = useRef<WebCameraHandler>(null);
   const [image, setImage] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -47,21 +38,17 @@ const ImageCapture = ({ isOpen, onOpenChange, handleAnalyze }: IProps) => {
   const navigate = useNavigate();
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger className="sr-only"></DialogTrigger>
-      <DialogContent
-        showCloseButton={false}
-        className="flex flex-col items-center justify-around max-w-full h-full p-0 pb-4"
-      >
+    <div className="h-full">
+      <div className="flex flex-col items-center justify-around max-w-full h-full p-0 pb-4">
         <div className="flex pt-4 pr-4 w-full justify-end">
-          <DialogClose onClick={() => navigate("/")} asChild>
-            <Button className="rounded-full size-12.5" variant="secondary">
-              <XIcon className="size-7!" />
-            </Button>
-          </DialogClose>
+          <Button
+            className="rounded-full size-12.5"
+            variant="secondary"
+            onClick={() => navigate("/")}
+          >
+            <XIcon className="size-7!" />
+          </Button>
         </div>
-        <DialogDescription className="sr-only"></DialogDescription>
-        <DialogTitle className="sr-only"></DialogTitle>
         {image ? (
           <img
             src={image}
@@ -69,7 +56,7 @@ const ImageCapture = ({ isOpen, onOpenChange, handleAnalyze }: IProps) => {
             className="w-full h-120 rounded-[5px] object-cover"
           />
         ) : (
-          <div className="relative h-120 w-full">
+          <div className="relative max-h-120 h-full w-full">
             <WebCamera
               style={{ height: "100%", width: "100%" }}
               videoStyle={{ borderRadius: 5 }}
@@ -98,8 +85,8 @@ const ImageCapture = ({ isOpen, onOpenChange, handleAnalyze }: IProps) => {
             className="size-14 bg-white rounded-full cursor-pointer"
           ></button>
         )}
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
 

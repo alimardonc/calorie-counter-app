@@ -105,39 +105,37 @@ const FoodPage = () => {
         className="w-full max-h-64 object-cover"
       />
 
-      <div className="px-4 py-2 h-[calc(100dvh-380px)] overflow-y-auto flex flex-col gap-3">
-        <h2 className="text-3xl font-bold my-2">{food.foodName}</h2>
-        <div className="flex flex-col gap-3">
+      <div className="px-4 h-[calc(100dvh-380px)] overflow-y-auto flex flex-col gap-3">
+        <h2 className="text-3xl font-bold">{food.foodName}</h2>
+        <div className="grid grid-cols-2 gap-3">
           <Card2
             stat={food.calories}
             Icon={CalorieIcon}
             title={t("nutfact.calories")}
             color={caloriesColor}
           />
-          <div className="grid grid-cols-3 gap-1.5 items-center">
-            <Card2
-              stat={food.protein}
-              Icon={ProteinIcon}
-              title={t("nutfact.protein")}
-              color={proteinColor}
-            />
-            <Card2
-              stat={food.carbs}
-              Icon={CarbIcon}
-              title={t("nutfact.carbs")}
-              color={carbsColor}
-            />
-            <Card2
-              stat={food.fat}
-              Icon={FatIcon}
-              title={t("nutfact.fat")}
-              color={fatColor}
-            />
-          </div>
+          <Card2
+            stat={food.protein}
+            Icon={ProteinIcon}
+            title={t("nutfact.protein")}
+            color={proteinColor}
+          />
+          <Card2
+            stat={food.carbs}
+            Icon={CarbIcon}
+            title={t("nutfact.carbs")}
+            color={carbsColor}
+          />
+          <Card2
+            stat={food.fat}
+            Icon={FatIcon}
+            title={t("nutfact.fat")}
+            color={fatColor}
+          />
         </div>
 
         {food?.healthScore && (
-          <div className="bg-card w-full flex rounded-md px-4 py-2.5 items-start justify-between">
+          <div className="bg-card w-full flex rounded-md px-4 py-3 items-start justify-between">
             <div className="flex gap-3 h-full items-start">
               <FaHeartBroken color="#ff2525" size={30} className="mt-1" />
               <div className="flex flex-col gap-3">

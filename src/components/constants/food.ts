@@ -1,9 +1,10 @@
-import { GiChickenLeg, GiButter } from "react-icons/gi";
+import { GiButter } from "react-icons/gi";
 import { FaWheatAwn } from "react-icons/fa6";
 import { FaFire } from "react-icons/fa6";
+import { Beef } from "lucide-react";
 
 export {
-  GiChickenLeg as ProteinIcon,
+  Beef as ProteinIcon,
   GiButter as FatIcon,
   FaWheatAwn as CarbIcon,
   FaFire as CalorieIcon,

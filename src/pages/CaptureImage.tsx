@@ -8,15 +8,7 @@ const CaptureImage = () => {
     analyzeFood(image, imageType);
   };
 
-  return (
-    <>
-      <ImageCapture
-        isOpen={true}
-        onOpenChange={() => {}}
-        handleAnalyze={handleAnalyze}
-      />
-    </>
-  );
+  return <ImageCapture isOpen={true} handleAnalyze={handleAnalyze} />;
 };
 
 export default CaptureImage;

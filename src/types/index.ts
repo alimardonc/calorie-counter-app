@@ -3,13 +3,13 @@ export type IGoal = "Weight Loss" | "Maintenance" | "Muscle Gain";
 export type IGender = "Female" | "Male";
 
 export interface IUserInfo {
+  name?: string;
   gender: IGender;
   age: number;
   weight: number;
   height: number;
   activity: ActivityLevel;
   goal: IGoal;
-  api_key: string;
   weeklykg: number;
   weightgoal: number;
 }

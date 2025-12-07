@@ -1,27 +1,25 @@
 import { useStore } from "@/store/use-store";
 import { useEffect } from "react";
-import { Spinner } from "./ui/spinner";
 import type { IUserInfo } from "@/types";
+import { AnalysisLoader } from "./ui/analysis-loader";
 
 interface IProps {
   userinfo: IUserInfo;
+  api_key: string;
 }
 
-const Analyzing = ({ userinfo }: IProps) => {
+const Analyzing = ({ userinfo, api_key }: IProps) => {
   const setUser = useStore((state) => state.setUser);
+  const setApiKey = useStore((state) => state.setApiKey);
 
   useEffect(() => {
     setTimeout(() => {
       setUser(userinfo);
-    }, 1500);
+      setApiKey(api_key);
+    }, 5000);
   }, [userinfo]);
 
-  return (
-    <div className="w-full h-full flex flex-col gap-1 items-center justify-center">
-      <Spinner className="stroke-1 size-15" />
-      <p>Analyzing...</p>
-    </div>
-  );
+  return <AnalysisLoader />;
 };
 
 export default Analyzing;

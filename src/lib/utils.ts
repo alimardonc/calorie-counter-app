@@ -15,34 +15,22 @@ export function getNutFact(user: IUserInfo) {
       ? 10 * weight + 6.25 * height - 5 * age + 5
       : 10 * weight + 6.25 * height - 5 * age - 161;
 
-  let activityMultiplier = 1.2;
-  switch (activity) {
-    case "0":
-      activityMultiplier = 1.2;
-      break;
-    case "2 - 3":
-      activityMultiplier = 1.375;
-      break;
-    case "4 - 5":
-      activityMultiplier = 1.55;
-      break;
-    case "6+":
-      activityMultiplier = 1.75;
-      break;
-  }
+  const activityMap: Record<string, number> = {
+    "0": 1.2,
+    "2 - 3": 1.375,
+    "4 - 5": 1.55,
+    "6+": 1.75,
+  };
 
+  const activityMultiplier = activityMap[activity] ?? 1.2;
   let dailyCalories = bmr * activityMultiplier;
 
-  let safeWeeklyKg = weeklykg;
+  let safeWeeklyKg = Math.max(0, Number(weeklykg) || 0);
 
-  if (goal === "Weight Loss") {
-    safeWeeklyKg = Math.max(Math.min(Math.abs(weeklykg), 1.0), 0.3) * -1;
-    const dailyDeficit = (Math.abs(safeWeeklyKg) * 7700) / 7;
-    dailyCalories -= dailyDeficit;
-  } else if (goal === "Muscle Gain") {
-    safeWeeklyKg = Math.max(Math.min(weeklykg, 1.0), 0.3);
-    const dailySurplus = (safeWeeklyKg * 7700) / 7;
-    dailyCalories += dailySurplus;
+  if (goal === "Weight Loss" && safeWeeklyKg > 0) {
+    dailyCalories -= (safeWeeklyKg * 7700) / 7;
+  } else if (goal === "Muscle Gain" && safeWeeklyKg > 0) {
+    dailyCalories += (safeWeeklyKg * 7700) / 7;
   } else {
     safeWeeklyKg = 0;
   }
@@ -50,7 +38,6 @@ export function getNutFact(user: IUserInfo) {
   let proteinPerKg = 2.0;
   if (goal === "Muscle Gain") proteinPerKg = 2.2;
   if (goal === "Maintenance") proteinPerKg = 1.8;
-  if (goal === "Weight Loss") proteinPerKg = 2.0;
 
   const protein = proteinPerKg * weight;
   const proteinCalories = protein * 4;
@@ -62,9 +49,15 @@ export function getNutFact(user: IUserInfo) {
   const carbs = carbsCalories / 4;
 
   let weeksNeeded = 0;
-  if (weightgoal) {
+  if (weightgoal && safeWeeklyKg > 0) {
     const weightDiff = weightgoal - weight;
-    weeksNeeded = Math.ceil(Math.abs(weightDiff / safeWeeklyKg));
+
+    if (
+      (goal === "Weight Loss" && weightDiff < 0) ||
+      (goal === "Muscle Gain" && weightDiff > 0)
+    ) {
+      weeksNeeded = Math.ceil(Math.abs(weightDiff / safeWeeklyKg));
+    }
   }
 
   return {

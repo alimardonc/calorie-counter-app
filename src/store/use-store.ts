@@ -1,217 +1,169 @@
-import type { IFood, INutritionalFact, IUserInfo } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { useCalendarStore } from "./use-calendar";
-import { GoogleGenAI } from "@google/genai";
+import { AiClient } from "@/lib/ai";
+import { extractJson } from "@/lib/parse";
+import { getNutFact } from "@/lib/utils";
 import { v4 as uuid } from "uuid";
 import i18n from "@/i18n";
-import { getNutFact } from "@/lib/utils";
+import type { IFood, INutritionalFact, IUserInfo } from "@/types";
+import { useCalendarStore } from "./use-calendar";
 
 interface CalorieStore {
   user: IUserInfo | null;
   nutFact: INutritionalFact;
   apiKey: string;
-  setApiKey: (key: string) => void;
-  analyzeFood: (image: string, imageType: string) => void;
-  setUser: (user: IUserInfo) => void;
-  clearUser: () => void;
-  recalcCalories: () => void;
-  foodStats: Record<string, IFood[]>;
-  setFoodStats: (stats: IFood) => void;
+  ai: AiClient | null;
   isAnalyzing: boolean;
+
+  foodStats: Record<string, IFood[]>;
   userStats: Record<string, INutritionalFact>;
-  initUserStats: (key: string) => void;
+
+  setApiKey: (key: string) => void;
+  setUser: (u: IUserInfo) => void;
+  clearUser: () => void;
+
+  analyzeFood: (image: string, type: string) => Promise<void>;
+  setFoodStats: (f: IFood) => void;
   deleteFood: (id: string) => void;
+
+  initUserStats: (day: string) => void;
+  recalcCalories: () => void;
 }
+
+const prompt = `
+You must respond strictly in JSON. No text. No markdown.
+
+{
+  "foodName": "string | null",
+  "calories": number,
+  "protein": number,
+  "fat": number,
+  "carbs": number,
+  "healthScore": number
+}
+(foodName must be in language: ${i18n.language})
+`;
 
 export const useStore = create<CalorieStore>()(
   persist(
-    (set, get) => {
-      let genAI: GoogleGenAI | null = null;
+    (set, get) => ({
+      user: null,
+      nutFact: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+      apiKey: "",
+      ai: null,
+      isAnalyzing: false,
+      foodStats: {},
+      userStats: {},
 
-      const prompt = `
-        You are a model that must always respond strictly in valid JSON format.
-        Do not include any text before or after the JSON.
-        Do not include explanations, comments, markdown, or descriptions.
+      setApiKey: (key) => {
+        set({ apiKey: key, ai: new AiClient(key) });
+      },
 
-        Your response must always be a valid JSON object.
-        If exact values are unknown, provide best estimates based on typical nutritional values.
-        Never return null unless completely impossible.
-        If there are multiple items, use arrays.
+      setUser: (user) => {
+        set({
+          user,
+          nutFact: getNutFact(user),
+        });
+      },
 
-        - foodName must be in the current language specified by ${i18n.language}.
+      clearUser: () =>
+        set({
+          user: null,
+          nutFact: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+          foodStats: {},
+          userStats: {},
+        }),
 
-        The JSON structure you must return:
+      analyzeFood: async (image, type) => {
+        const ai = get().ai;
+        if (!ai) throw new Error("API key not set");
 
-        {
-          "foodName": "string | null",
-          "calories": "number | null",
-          "protein": "number | null",
-          "fat": "number | null",
-          "carbs": "number | null",
-          "healthScore": "number" //must be between 0 and 10 based on food
+        set({ isAnalyzing: true });
+
+        try {
+          const text = await ai.analyzeImage(image, type, prompt);
+          const items = extractJson(text + "");
+
+          items.forEach((food) =>
+            get().setFoodStats({
+              ...food,
+              id: uuid(),
+              image,
+              createdAt: new Date().toISOString(),
+            }),
+          );
+        } finally {
+          set({ isAnalyzing: false });
         }
+      },
 
-        Return ONLY JSON. Nothing else.
-      `;
+      initUserStats: (day) => {
+        set({
+          userStats: {
+            ...get().userStats,
+            [day]: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+          },
+        });
+      },
 
-      const extractJsonFromGemini = (text: string): IFood[] => {
-        const cleaned = text
-          .replace(/```json/i, "")
-          .replace(/```/g, "")
-          .trim();
+      setFoodStats: (food) => {
+        const day = useCalendarStore.getState().selectedDate;
 
-        const parsed = JSON.parse(cleaned);
+        const prevList = get().foodStats[day] ?? [];
+        const prevStats = get().userStats[day] ?? {
+          calories: 0,
+          protein: 0,
+          carbs: 0,
+          fat: 0,
+        };
 
-        return Array.isArray(parsed) ? parsed : [parsed];
-      };
-
-      return {
-        user: null,
-        nutFact: { protein: 0, carbs: 0, fat: 0, calories: 0 },
-        apiKey:
-          JSON.parse(localStorage.getItem("calorie-storage") || "{}")?.state
-            ?.user?.api_key || "",
-        setApiKey: (key: string) => {
-          set({ apiKey: key });
-          genAI = new GoogleGenAI({ apiKey: key });
-        },
-        analyzeFood: async (image: string, imageType: string) => {
-          if (!genAI) {
-            const key = get().apiKey;
-            if (!key) {
-              set({ user: null, apiKey: "" });
-              throw new Error("API key not set");
-            }
-            genAI = new GoogleGenAI({ apiKey: key });
-          }
-          set({ isAnalyzing: true });
-          try {
-            const response = await genAI.models.generateContent({
-              model: "gemini-2.5-flash",
-              contents: [
-                {
-                  role: "user",
-                  parts: [
-                    {
-                      inlineData: {
-                        data: image.replace(/^data:.*;base64,/, ""),
-                        mimeType: imageType,
-                      },
-                    },
-                  ],
-                },
-              ],
-              config: {
-                systemInstruction: prompt,
-              },
-            });
-
-            const data = extractJsonFromGemini(response.text + "");
-            data.map((e) => {
-              get().setFoodStats({
-                ...e,
-                image,
-                createdAt: new Date().toString(),
-                id: uuid(),
-              });
-            });
-            set({ isAnalyzing: false });
-          } catch (error) {
-            console.error(error);
-          }
-        },
-        setUser: (user) => {
-          set({ user, apiKey: user.api_key });
-          const nutFact = getNutFact(user);
-          set({ nutFact });
-        },
-        userStats: {},
-        initUserStats: (key) => {
-          set({
-            userStats: {
-              ...get().userStats,
-              [key]: {
-                calories: 0,
-                protein: 0,
-                carbs: 0,
-                fat: 0,
-              },
+        set({
+          foodStats: {
+            ...get().foodStats,
+            [day]: [...prevList, food],
+          },
+          userStats: {
+            ...get().userStats,
+            [day]: {
+              calories: prevStats.calories + food.calories,
+              protein: prevStats.protein + food.protein,
+              carbs: prevStats.carbs + food.carbs,
+              fat: prevStats.fat + food.fat,
             },
-          });
-        },
-        isAnalyzing: false,
-        deleteFood: (id) => {
-          const key = useCalendarStore.getState().selectedDate;
-          const day = get().foodStats[key] ?? [];
-          const filtered = day.filter((f) => f.id !== id);
-          const deletedItem = day.find((f) => f.id === id);
-          if (!deletedItem) return;
-          const cur = get().userStats[key];
-          set({
-            foodStats: {
-              ...get().foodStats,
-              [key]: filtered,
-            },
-            userStats: {
-              ...get().userStats,
-              [key]: {
-                ...cur,
-                calories: cur.calories - deletedItem.calories,
-                protein: cur.protein - deletedItem.protein,
-                carbs: cur.carbs - deletedItem.carbs,
-                fat: cur.fat - deletedItem.fat,
-              },
-            },
-          });
-        },
-        setFoodStats: (stats) => {
-          const key = useCalendarStore.getState().selectedDate;
+          },
+        });
+      },
 
-          const prevDay = get().foodStats[key] ?? [];
-          const prevStats = get().userStats[key] ?? {
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
-          };
+      deleteFood: (id) => {
+        const day = useCalendarStore.getState().selectedDate;
+        const list = get().foodStats[day] ?? [];
 
-          set({
-            foodStats: {
-              ...get().foodStats,
-              [key]: [...prevDay, stats],
+        const deleted = list.find((f) => f.id === id);
+        if (!deleted) return;
+
+        set({
+          foodStats: {
+            ...get().foodStats,
+            [day]: list.filter((f) => f.id !== id),
+          },
+          userStats: {
+            ...get().userStats,
+            [day]: {
+              calories: get().userStats[day].calories - deleted.calories,
+              protein: get().userStats[day].protein - deleted.protein,
+              carbs: get().userStats[day].carbs - deleted.carbs,
+              fat: get().userStats[day].fat - deleted.fat,
             },
-            userStats: {
-              ...get().userStats,
-              [key]: {
-                calories: prevStats.calories + stats.calories,
-                protein: prevStats.protein + stats.protein,
-                carbs: prevStats.carbs + stats.carbs,
-                fat: prevStats.fat + stats.fat,
-              },
-            },
-          });
-        },
-        foodStats: {},
-        clearUser: () =>
-          set({
-            user: null,
-            nutFact: { calories: 0, protein: 0, carbs: 0, fat: 0 },
-            foodStats: {},
-            userStats: {},
-            isAnalyzing: false,
-          }),
-        recalcCalories: () => {
-          const user = get().user;
-          if (user) {
-            const nutFact = getNutFact(user);
-            set({ nutFact });
-          }
-        },
-      };
-    },
-    {
-      name: "calorie-storage",
-    },
+          },
+        });
+      },
+
+      recalcCalories: () => {
+        if (get().user) {
+          set({ nutFact: getNutFact(get().user!) });
+        }
+      },
+    }),
+    { name: "calorie-storage" },
   ),
 );
