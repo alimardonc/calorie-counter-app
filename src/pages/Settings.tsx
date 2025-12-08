@@ -28,7 +28,7 @@ import { useStore } from "@/store/use-store";
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "@/components/lang-select";
 import { Slider } from "@/components/ui/slider";
-import { version } from "../../package.json";
+import { version } from "@/components/constants/version";
 
 type FieldType = "input" | "select" | "slider";
 type InputType = "text" | "number";
