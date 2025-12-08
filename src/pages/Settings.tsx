@@ -28,6 +28,7 @@ import { useStore } from "@/store/use-store";
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "@/components/lang-select";
 import { Slider } from "@/components/ui/slider";
+import { version } from "../../package.json";
 
 type FieldType = "input" | "select" | "slider";
 type InputType = "text" | "number";
@@ -352,144 +353,150 @@ const Settings = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4 flex-1 h-full overflow-y-auto overflow-x-hidden">
-      <h2 className="text-2xl font-bold">{t("nav.settings")}</h2>
-
-      <div
-        className="bg-accent rounded-md p-2 flex items-center gap-3 cursor-pointer hover:bg-accent/80 transition-colors"
-        onClick={() =>
-          openEditModal(
-            "name",
-            user?.name,
-            "input",
-            t("settings.name_input_title"),
-          )
-        }
-      >
-        <div className="size-10 rounded-full bg-card flex items-center justify-center">
-          <FaRegUser />
-        </div>
-        <div>
-          <p className="flex items-center gap-2">
-            {user?.name || t("settings.name_input_title")} <Pencil size={16} />
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {user?.age} {t("settings.years")}
-          </p>
-        </div>
-      </div>
-
-      <Accordion type="multiple">
-        {/* Personal Information */}
-        <AccordionItem value="personal">
-          <AccordionTrigger>{t("settings.accordion_title1")}</AccordionTrigger>
-          <AccordionContent>
-            <ul className="flex flex-col gap-3">
-              {personalInfoFields.map(renderEditableField)}
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Goals & Nutrition */}
-        <AccordionItem value="nutrition">
-          <AccordionTrigger>{t("settings.accordion_title2")}</AccordionTrigger>
-          <AccordionContent>
-            <ul className="flex flex-col gap-3">
-              {goalFields.map(renderEditableField)}
-              {nutritionFields.map(renderStaticField)}
-
-              {nutFact?.weeksNeeded ? (
-                <li className={STATIC_ITEM_CLASS}>
-                  <p>{t("settings.title_weeks_needed")}</p>
-                  <p className="text-sm">
-                    {nutFact.weeksNeeded} {t("settings.weeks")}
-                  </p>
-                </li>
-              ) : null}
-
-              <li className={STATIC_ITEM_CLASS}>
-                <p>{t("settings.recalculate")}</p>
-                <Button variant="secondary" onClick={recalc}>
-                  {t("settings.recalculate")}
-                </Button>
-              </li>
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
-      <ul className="flex flex-col gap-3">
-        {renderEditableField(apiKey)}
-        <li className={STATIC_ITEM_CLASS}>
-          <p>{t("settings.language")}</p>
-          <LanguageSelect />
-        </li>
-      </ul>
-
-      <Dialog open={editModal.isOpen} onOpenChange={closeEditModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t("settings.edit")}</DialogTitle>
-          </DialogHeader>
-
-          <div className="py-4">
-            <Label htmlFor="edit-field">{fieldConfig.label}</Label>
-            {fieldConfig.type === "select" && fieldConfig.options && (
-              <Select
-                value={editModal.value}
-                onValueChange={(value) =>
-                  setEditModal((prev) => ({ ...prev, value }))
-                }
-              >
-                <SelectTrigger className="mt-2">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {fieldConfig.options.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-            {fieldConfig.type === "slider" && (
-              <div className="flex flex-col gap-5 text-center mt-2">
-                <p className="font-bold text-2xl">
-                  {editModal.value} {t("kg")}
-                </p>
-                <Slider
-                  defaultValue={[Number(editModal?.value)]}
-                  min={0.5}
-                  step={0.1}
-                  max={1.5}
-                  onValueChange={(e) =>
-                    setEditModal((prev) => ({ ...prev, value: e[0] + "" }))
-                  }
-                />
-              </div>
-            )}
-            {fieldConfig.type === "input" && (
-              <Input
-                id="edit-field"
-                type={fieldConfig.inputType || "text"}
-                value={editModal.value}
-                onChange={(e) =>
-                  setEditModal((prev) => ({ ...prev, value: e.target.value }))
-                }
-                className="mt-2"
-              />
-            )}
+    <div className="flex flex-col justify-between h-full">
+      <div className="flex flex-col gap-4 flex-1 h-full overflow-y-auto overflow-x-hidden">
+        <h2 className="text-2xl font-bold">{t("nav.settings")}</h2>
+        <div
+          className="bg-accent rounded-md p-2 flex items-center gap-3 cursor-pointer hover:bg-accent/80 transition-colors"
+          onClick={() =>
+            openEditModal(
+              "name",
+              user?.name,
+              "input",
+              t("settings.name_input_title"),
+            )
+          }
+        >
+          <div className="size-10 rounded-full bg-card flex items-center justify-center">
+            <FaRegUser />
           </div>
+          <div>
+            <p className="flex items-center gap-2">
+              {user?.name || t("settings.name_input_title")}{" "}
+              <Pencil size={16} />
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {user?.age} {t("settings.years")}
+            </p>
+          </div>
+        </div>
+        <Accordion type="multiple">
+          {/* Personal Information */}
+          <AccordionItem value="personal">
+            <AccordionTrigger>
+              {t("settings.accordion_title1")}
+            </AccordionTrigger>
+            <AccordionContent>
+              <ul className="flex flex-col gap-3">
+                {personalInfoFields.map(renderEditableField)}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={closeEditModal}>
-              {t("cancel")}
-            </Button>
-            <Button onClick={handleSave}>{t("save")}</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          {/* Goals & Nutrition */}
+          <AccordionItem value="nutrition">
+            <AccordionTrigger>
+              {t("settings.accordion_title2")}
+            </AccordionTrigger>
+            <AccordionContent>
+              <ul className="flex flex-col gap-3">
+                {goalFields.map(renderEditableField)}
+                {nutritionFields.map(renderStaticField)}
+
+                {nutFact?.weeksNeeded ? (
+                  <li className={STATIC_ITEM_CLASS}>
+                    <p>{t("settings.title_weeks_needed")}</p>
+                    <p className="text-sm">
+                      {nutFact.weeksNeeded} {t("settings.weeks")}
+                    </p>
+                  </li>
+                ) : null}
+
+                <li className={STATIC_ITEM_CLASS}>
+                  <p>{t("settings.recalculate")}</p>
+                  <Button variant="secondary" onClick={recalc}>
+                    {t("settings.recalculate")}
+                  </Button>
+                </li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <ul className="flex flex-col gap-3">
+          {renderEditableField(apiKey)}
+          <li className={STATIC_ITEM_CLASS}>
+            <p>{t("settings.language")}</p>
+            <LanguageSelect />
+          </li>
+        </ul>
+        <Dialog open={editModal.isOpen} onOpenChange={closeEditModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t("settings.edit")}</DialogTitle>
+            </DialogHeader>
+
+            <div className="py-4">
+              <Label htmlFor="edit-field">{fieldConfig.label}</Label>
+              {fieldConfig.type === "select" && fieldConfig.options && (
+                <Select
+                  value={editModal.value}
+                  onValueChange={(value) =>
+                    setEditModal((prev) => ({ ...prev, value }))
+                  }
+                >
+                  <SelectTrigger className="mt-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fieldConfig.options.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+              {fieldConfig.type === "slider" && (
+                <div className="flex flex-col gap-5 text-center mt-2">
+                  <p className="font-bold text-2xl">
+                    {editModal.value} {t("kg")}
+                  </p>
+                  <Slider
+                    defaultValue={[Number(editModal?.value)]}
+                    min={0.5}
+                    step={0.1}
+                    max={1.5}
+                    onValueChange={(e) =>
+                      setEditModal((prev) => ({ ...prev, value: e[0] + "" }))
+                    }
+                  />
+                </div>
+              )}
+              {fieldConfig.type === "input" && (
+                <Input
+                  id="edit-field"
+                  type={fieldConfig.inputType || "text"}
+                  value={editModal.value}
+                  onChange={(e) =>
+                    setEditModal((prev) => ({ ...prev, value: e.target.value }))
+                  }
+                  className="mt-2"
+                />
+              )}
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={closeEditModal}>
+                {t("cancel")}
+              </Button>
+              <Button onClick={handleSave}>{t("save")}</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <span className="text-muted-foreground text-sm w-full text-center">
+        version {version}
+      </span>
     </div>
   );
 };

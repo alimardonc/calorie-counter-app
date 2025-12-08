@@ -97,5 +97,9 @@
     "edit": "Tahrirlash"
   },
   "cancel": "Bekor qilish",
-  "save": "Saqlash"
+  "save": "Saqlash",
+  "food_page": {
+    "confidence": "AI aniqligi",
+    "ingredients": "Masalliqlar"
+  }
 }

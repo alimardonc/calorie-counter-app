@@ -19,8 +19,12 @@ interface CalorieStore {
   setUser: (u: IUserInfo) => void;
   clearUser: () => void;
 
-  analyzeFood: (image: string, type: string) => Promise<void>;
-  retryAnalyzeFood: (id: string) => Promise<void>;
+  analyzeFood: (
+    image: string,
+    type: string,
+    userPrompt: string,
+  ) => Promise<void>;
+  retryAnalyzeFood: (id: string, userPrompt: string) => Promise<void>;
   setFoodStats: (f: IFood) => void;
   deleteFood: (id: string) => void;
   updateFood: (id: string, updates: Partial<IFood>) => void;
@@ -64,7 +68,7 @@ export const useStore = create<CalorieStore>()(
           userStats: {},
         }),
 
-      analyzeFood: async (image, type) => {
+      analyzeFood: async (image, type, userPrompt) => {
         const apiKey = get().apiKey;
         if (!apiKey) throw new Error("API key not set");
 
@@ -95,7 +99,7 @@ export const useStore = create<CalorieStore>()(
         });
 
         try {
-          const text = await analyzeImage(image, type, apiKey);
+          const text = await analyzeImage(image, type, apiKey, userPrompt);
           const items = extractJson(text + "");
 
           get().deleteFood(tempId);
@@ -120,7 +124,7 @@ export const useStore = create<CalorieStore>()(
         }
       },
 
-      retryAnalyzeFood: async (id: string) => {
+      retryAnalyzeFood: async (id: string, userPrompt: string) => {
         const day = useCalendarStore.getState().selectedDate;
         const list = get().foodStats[day] ?? [];
         const food = list.find((f) => f.id === id);
@@ -137,7 +141,12 @@ export const useStore = create<CalorieStore>()(
         });
 
         try {
-          const text = await analyzeImage(food.image, food.imageType, apiKey);
+          const text = await analyzeImage(
+            food.image,
+            food.imageType,
+            apiKey,
+            userPrompt,
+          );
           const items = extractJson(text + "");
 
           get().deleteFood(id);

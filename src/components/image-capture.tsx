@@ -53,7 +53,7 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
           <img
             src={image}
             alt="Captured Image"
-            className="w-full h-120 rounded-[5px] object-cover"
+            className="w-full h-120 rounded-[6px] object-cover"
           />
         ) : (
           <div className="relative max-h-120 h-full w-full">

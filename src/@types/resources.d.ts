@@ -8,6 +8,10 @@ interface Resources {
     "descriptionof": "Description of",
     "done": "Done",
     "fix_results": "Fix Results",
+    "food_page": {
+      "confidence": "Confidence of AI",
+      "ingredients": "Ingredients"
+    },
     "g": "g",
     "health_score": "Health Score",
     "info": {

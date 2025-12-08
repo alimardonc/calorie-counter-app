@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCalendarStore } from "@/store/use-calendar";
 import { useStore } from "@/store/use-store";
 import { Button } from "../components/ui/button";
-import { ArrowLeft, Trash } from "lucide-react";
+import { ArrowLeft, Bot, Trash } from "lucide-react";
+import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -64,7 +66,7 @@ const FoodPage = () => {
   }
 
   return (
-    <div className="relative bg-background flex flex-col justify-between h-full">
+    <div className="relative bg-background flex flex-col h-screen">
       <div className="absolute top-2.5 px-2.5 w-full flex justify-between items-center">
         <Button
           className="rounded-full size-12.5"
@@ -81,6 +83,7 @@ const FoodPage = () => {
               <HiDotsHorizontal className="size-7! text-primary" />
             </button>
           </DrawerTrigger>
+          <DrawerDescription className="sr-only"></DrawerDescription>
           <DrawerContent className="px-4 pb-2">
             <DrawerHeader>
               <DrawerTitle>{food.foodName}</DrawerTitle>
@@ -105,8 +108,32 @@ const FoodPage = () => {
         className="w-full max-h-64 object-cover"
       />
 
-      <div className="px-4 h-[calc(100dvh-380px)] overflow-y-auto flex flex-col gap-3">
+      <div className="p-4">
+        <div className="flex gap-3 items-center justify-between mb-2">
+          <div className="flex gap-3 items-center">
+            <button>
+              {food.isFavorite ? (
+                <IoBookmark strokeWidth={2} className="size-5!" />
+              ) : (
+                <IoBookmarkOutline strokeWidth={2} className="size-5!" />
+              )}
+            </button>
+            <p className="font-bold text-sm bg-accent py-1.5 px-3 rounded-[6px] text-muted-foreground">
+              {food.weight + " " + food.servingUnit}
+            </p>
+          </div>
+          <p className="font-bold text-sm bg-accent py-1.5 px-3 rounded-[6px] text-muted-foreground">
+            {new Date(food.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            })}
+          </p>
+        </div>
         <h2 className="text-3xl font-bold">{food.foodName}</h2>
+      </div>
+
+      <div className="px-4 flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto">
         <div className="grid grid-cols-2 gap-3">
           <Card2
             stat={food.calories}
@@ -142,12 +169,44 @@ const FoodPage = () => {
                 <p className="text-xl font-bold">{t("health_score")}</p>
                 <Progress
                   value={food.healthScore * 10}
-                  className="[&>div]:bg-green-400"
+                  className="[&>div]:bg-green-400 w-45"
                 />
               </div>
             </div>
             <p className="font-bold">{food.healthScore}/10</p>
           </div>
+        )}
+
+        {food?.confidence && (
+          <div className="bg-card w-full flex rounded-md px-4 py-3 items-start justify-between">
+            <div className="flex gap-3 h-full items-start">
+              <Bot color="#0089ff" size={30} className="mt-1" strokeWidth={2} />
+              <div className="flex flex-col gap-3">
+                <p className="text-xl font-bold">{t("food_page.confidence")}</p>
+                <Progress
+                  value={food.confidence * 10}
+                  className="[&>div]:bg-yellow-400 w-45"
+                />
+              </div>
+            </div>
+            <p className="font-bold">{food.confidence}/10</p>
+          </div>
+        )}
+
+        {food?.ingredients && (
+          <>
+            <h2 className="text-3xl font-bold">{t("food_page.ingredients")}</h2>
+            <div className="grid grid-cols-1 gap-2">
+              {food.ingredients.map((e, idx) => (
+                <div
+                  key={idx}
+                  className="bg-card w-full flex rounded-md px-4 py-2 items-center gap-3"
+                >
+                  <p className="text-sm">{e}</p>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

@@ -16,7 +16,7 @@ export default function FoodSkeleton({ food }: { food: IFood }) {
            animation: shimmer 2s infinite;
          }
        `}</style>
-      <div className="bg-card w-full h-24 flex rounded-xl overflow-hidden shadow-sm border border-border/50">
+      <div className="bg-card w-full h-28 flex rounded-xl overflow-hidden shadow-sm border border-border/50">
         <img
           src={food.image}
           alt={food.foodName}

@@ -24,12 +24,24 @@ export interface INutritionalFact {
 }
 
 export interface IFood extends INutritionalFact {
-  foodName: string;
+  isFavorite?: boolean;
+  id: string;
   image: string;
   imageType: string;
-  createdAt: string;
-  id: string;
+  foodName: string;
+  sugar?: number;
+  fiber?: number;
+  weight?: number;
+  servingUnit?: string;
+  servingDescription?: string;
+  category?: string;
+  ingredients?: string[];
+  mealType?: string;
+  macroProfile?: string;
+  dietCompatibility?: string[] | null;
+  confidence?: number;
   healthScore: number;
-  isLoading: boolean;
-  isRetry: boolean;
+  isLoading?: boolean;
+  isRetry?: boolean;
+  createdAt: string;
 }

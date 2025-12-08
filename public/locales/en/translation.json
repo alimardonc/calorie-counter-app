@@ -97,5 +97,9 @@
     "edit": "Edit"
   },
   "cancel": "Cancel",
-  "save": "Save"
+  "save": "Save",
+  "food_page": {
+    "confidence": "AI Accuracy",
+    "ingredients": "Ingredients"
+  }
 }
