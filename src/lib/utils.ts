@@ -65,7 +65,6 @@ export function getNutFact(user: IUserInfo) {
     protein: Math.round(protein),
     fat: Math.round(fat),
     carbs: Math.round(carbs),
-    weeklyKg: safeWeeklyKg,
     weeksNeeded,
   };
 }
@@ -79,7 +78,7 @@ export function roundNumber(
 
 export function getDisplayStat(stat: number | null | undefined, fact: number) {
   if (stat) {
-    return Math.abs(fact - stat).toFixed(1);
+    return Math.abs(fact - stat).toFixed();
   }
   return fact;
 }

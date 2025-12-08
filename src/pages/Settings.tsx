@@ -27,8 +27,9 @@ import {
 import { useStore } from "@/store/use-store";
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "@/components/lang-select";
+import { Slider } from "@/components/ui/slider";
 
-type FieldType = "input" | "select";
+type FieldType = "input" | "select" | "slider";
 type InputType = "text" | "number";
 
 interface SelectOption {
@@ -57,6 +58,7 @@ interface SettingsField {
   value: string | number | undefined;
   unit?: string;
   type?: FieldType;
+  hidden?: boolean;
   onClick: () => void;
 }
 
@@ -181,7 +183,7 @@ const Settings = () => {
       },
       weeklykg: {
         label: t("steps.weeklykg.label"),
-        type: "input",
+        type: "slider",
         inputType: "number",
       },
     };
@@ -251,6 +253,30 @@ const Settings = () => {
       unit: t("kg"),
       onClick: () => openEditModal("weightgoal", user?.weightgoal),
     },
+    user?.goal !== "Maintenance"
+      ? {
+          key: "weeklyKg",
+          label:
+            t("steps.weeklykg.title").toLowerCase() +
+            " " +
+            (user?.goal == "Muscle Gain"
+              ? t("steps.weeklykg.gain")
+              : t("steps.weeklykg.loss")) +
+            " " +
+            t("steps.weeklykg.title2"),
+          value: user?.weeklykg,
+          unit: t("kg"),
+          type: "slider",
+          onClick: () => openEditModal("weeklykg", nutFact?.weeklyKg || 0.5),
+        }
+      : {
+          key: "weeklyKg",
+          label: "",
+          value: "",
+          unit: t("kg"),
+          onClick: () => {},
+          hidden: true,
+        },
   ];
 
   const nutritionFields = [
@@ -290,22 +316,25 @@ const Settings = () => {
 
   const fieldConfig = getFieldConfig(editModal.field);
 
-  const renderEditableField = (field: SettingsField) => (
-    <li
-      key={field.key}
-      className={CLICKABLE_ITEM_CLASS}
-      onClick={field.onClick}
-    >
-      <p>{field.label}</p>
-      <div className="flex items-center gap-2">
-        <p className="text-sm">
-          {field.value}
-          {field.unit && ` ${field.unit}`}
-        </p>
-        <Pencil size={14} className="text-muted-foreground" />
-      </div>
-    </li>
-  );
+  const renderEditableField = (field: SettingsField) => {
+    if (field.hidden) return null;
+    return (
+      <li
+        key={field.key}
+        className={CLICKABLE_ITEM_CLASS}
+        onClick={field.onClick}
+      >
+        <p>{field.label}</p>
+        <div className="flex items-center gap-2">
+          <p className="text-sm">
+            {field.value}
+            {field.unit && ` ${field.unit}`}
+          </p>
+          <Pencil size={14} className="text-muted-foreground" />
+        </div>
+      </li>
+    );
+  };
 
   const renderStaticField = (field: {
     key: string;
@@ -400,14 +429,12 @@ const Settings = () => {
       <Dialog open={editModal.isOpen} onOpenChange={closeEditModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              {t("settings.edit") || "Edit"} {fieldConfig.label}
-            </DialogTitle>
+            <DialogTitle>{t("settings.edit")}</DialogTitle>
           </DialogHeader>
 
           <div className="py-4">
             <Label htmlFor="edit-field">{fieldConfig.label}</Label>
-            {fieldConfig.type === "select" && fieldConfig.options ? (
+            {fieldConfig.type === "select" && fieldConfig.options && (
               <Select
                 value={editModal.value}
                 onValueChange={(value) =>
@@ -425,7 +452,24 @@ const Settings = () => {
                   ))}
                 </SelectContent>
               </Select>
-            ) : (
+            )}
+            {fieldConfig.type === "slider" && (
+              <div className="flex flex-col gap-5 text-center mt-2">
+                <p className="font-bold text-2xl">
+                  {editModal.value} {t("kg")}
+                </p>
+                <Slider
+                  defaultValue={[Number(editModal?.value)]}
+                  min={0.5}
+                  step={0.1}
+                  max={1.5}
+                  onValueChange={(e) =>
+                    setEditModal((prev) => ({ ...prev, value: e[0] + "" }))
+                  }
+                />
+              </div>
+            )}
+            {fieldConfig.type === "input" && (
               <Input
                 id="edit-field"
                 type={fieldConfig.inputType || "text"}

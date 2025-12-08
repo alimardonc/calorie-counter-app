@@ -25,7 +25,7 @@ const Card = ({ title, stat, icon, color, goal }: CardProps) => {
     >
       <div className="ml-3">
         <p className="text-2xl max-sm:text-xl font-bold">
-          {isOver ? stat : getDisplayStat(stat, goal)}
+          {isOver ? stat.toFixed() : getDisplayStat(stat, goal)}
           {t("g")}
         </p>{" "}
         <span className="text-sm">{title}</span>
