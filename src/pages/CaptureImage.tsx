@@ -5,7 +5,7 @@ const CaptureImage = () => {
   const analyzeFood = useStore((state) => state.analyzeFood);
 
   const handleAnalyze = async (image: string, imageType: string) => {
-    analyzeFood(image, imageType);
+    analyzeFood(image, imageType, "");
   };
 
   return <ImageCapture isOpen={true} handleAnalyze={handleAnalyze} />;
