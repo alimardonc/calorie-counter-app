@@ -11,7 +11,6 @@ interface CalorieStore {
   user: IUserInfo | null;
   nutFact: INutritionalFact;
   apiKey: string;
-  isAnalyzing: boolean;
 
   foodStats: Record<string, IFood[]>;
   userStats: Record<string, INutritionalFact>;
@@ -21,8 +20,10 @@ interface CalorieStore {
   clearUser: () => void;
 
   analyzeFood: (image: string, type: string) => Promise<void>;
+  retryAnalyzeFood: (id: string) => Promise<void>;
   setFoodStats: (f: IFood) => void;
   deleteFood: (id: string) => void;
+  updateFood: (id: string, updates: Partial<IFood>) => void;
 
   initUserStats: (day: string) => void;
   recalcCalories: () => void;
@@ -35,7 +36,6 @@ export const useStore = create<CalorieStore>()(
       user: null,
       nutFact: { calories: 0, protein: 0, carbs: 0, fat: 0 },
       apiKey: "",
-      isAnalyzing: false,
       foodStats: {},
       userStats: {},
 
@@ -68,22 +68,97 @@ export const useStore = create<CalorieStore>()(
         const apiKey = get().apiKey;
         if (!apiKey) throw new Error("API key not set");
 
-        set({ isAnalyzing: true });
+        const tempId = uuid();
+        const day = useCalendarStore.getState().selectedDate;
+
+        const tempFood: IFood = {
+          id: tempId,
+          foodName: "Analyzing...",
+          image,
+          isLoading: true,
+          isRetry: false,
+          createdAt: new Date().toISOString(),
+          calories: 0,
+          protein: 0,
+          carbs: 0,
+          fat: 0,
+          healthScore: 0,
+          imageType: type,
+        };
+
+        const prevList = get().foodStats[day] ?? [];
+        set({
+          foodStats: {
+            ...get().foodStats,
+            [day]: [...prevList, tempFood],
+          },
+        });
 
         try {
           const text = await analyzeImage(image, type, apiKey);
           const items = extractJson(text + "");
+
+          get().deleteFood(tempId);
 
           items.forEach((food) =>
             get().setFoodStats({
               ...food,
               id: uuid(),
               image,
+              isLoading: false,
+              isRetry: false,
               createdAt: new Date().toISOString(),
             }),
           );
-        } finally {
-          set({ isAnalyzing: false });
+        } catch (error) {
+          get().updateFood(tempId, {
+            isLoading: false,
+            isRetry: true,
+            foodName: "Analysis failed",
+          });
+          throw error;
+        }
+      },
+
+      retryAnalyzeFood: async (id: string) => {
+        const day = useCalendarStore.getState().selectedDate;
+        const list = get().foodStats[day] ?? [];
+        const food = list.find((f) => f.id === id);
+
+        if (!food) throw new Error("Food not found");
+
+        const apiKey = get().apiKey;
+        if (!apiKey) throw new Error("API key not set");
+
+        get().updateFood(id, {
+          isLoading: true,
+          isRetry: false,
+          foodName: "Analyzing...",
+        });
+
+        try {
+          const text = await analyzeImage(food.image, food.imageType, apiKey);
+          const items = extractJson(text + "");
+
+          get().deleteFood(id);
+
+          items.forEach((newFood) =>
+            get().setFoodStats({
+              ...newFood,
+              id: uuid(),
+              image: food.image,
+              isLoading: false,
+              isRetry: false,
+              createdAt: food.createdAt,
+            }),
+          );
+        } catch (error) {
+          get().updateFood(id, {
+            isLoading: false,
+            isRetry: true,
+            foodName: "Analysis failed",
+          });
+          throw error;
         }
       },
 
@@ -120,6 +195,18 @@ export const useStore = create<CalorieStore>()(
               carbs: prevStats.carbs + food.carbs,
               fat: prevStats.fat + food.fat,
             },
+          },
+        });
+      },
+
+      updateFood: (id, updates) => {
+        const day = useCalendarStore.getState().selectedDate;
+        const list = get().foodStats[day] ?? [];
+
+        set({
+          foodStats: {
+            ...get().foodStats,
+            [day]: list.map((f) => (f.id === id ? { ...f, ...updates } : f)),
           },
         });
       },

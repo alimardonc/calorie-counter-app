@@ -3,6 +3,7 @@ import { useStore } from "@/store/use-store";
 import FoodSkeleton from "./ui/food-skeleton";
 import FoodItem from "./ui/food-item";
 import { NavLink } from "react-router-dom";
+import FoodRetry from "./ui/food-retry";
 
 const Foods = () => {
   const selectedDate = useCalendarStore((state) => state.selectedDate);
@@ -14,16 +15,19 @@ const Foods = () => {
       )
     : [];
 
-  const isAnalyzing = useStore((state) => state.isAnalyzing);
-
   return (
-    <div className="flex flex-col gap-2.5 mt-2 overflow-y-auto">
-      {isAnalyzing && <FoodSkeleton />}
-      {sortedFoods?.map((food) => (
-        <NavLink key={food.id} to={"/food/" + food.id}>
-          <FoodItem food={food} />
-        </NavLink>
-      ))}
+    <div className="grid grid-cols-1 gap-2.5 mt-2 overflow-y-auto">
+      {sortedFoods?.map((food) =>
+        food.isLoading ? (
+          <FoodSkeleton key={food.id} food={food} />
+        ) : food.isRetry ? (
+          <FoodRetry key={food.id} food={food} />
+        ) : (
+          <NavLink key={food.id} to={"/food/" + food.id}>
+            <FoodItem food={food} />
+          </NavLink>
+        ),
+      )}
     </div>
   );
 };

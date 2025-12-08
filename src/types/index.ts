@@ -26,7 +26,10 @@ export interface INutritionalFact {
 export interface IFood extends INutritionalFact {
   foodName: string;
   image: string;
+  imageType: string;
   createdAt: string;
   id: string;
   healthScore: number;
+  isLoading: boolean;
+  isRetry: boolean;
 }
