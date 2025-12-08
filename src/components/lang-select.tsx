@@ -14,7 +14,7 @@ const LanguageSelect = () => {
 
   return (
     <Select
-      defaultValue={i18n.language}
+      defaultValue={i18n.language || "en"}
       onValueChange={(value) => i18n.changeLanguage(value.slice(0, 2))}
     >
       <SelectTrigger>
