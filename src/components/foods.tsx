@@ -17,7 +17,7 @@ const Foods = () => {
   const isAnalyzing = useStore((state) => state.isAnalyzing);
 
   return (
-    <div className="flex flex-col gap-2.5 overflow-y-auto">
+    <div className="flex flex-col gap-2.5 mt-2 overflow-y-auto">
       {isAnalyzing && <FoodSkeleton />}
       {sortedFoods?.map((food) => (
         <NavLink key={food.id} to={"/food/" + food.id}>

@@ -79,7 +79,7 @@ export function roundNumber(
 
 export function getDisplayStat(stat: number | null | undefined, fact: number) {
   if (stat) {
-    return Math.abs(fact - stat);
+    return Math.abs(fact - stat).toFixed(1);
   }
   return fact;
 }

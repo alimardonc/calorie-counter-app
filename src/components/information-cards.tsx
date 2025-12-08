@@ -31,7 +31,7 @@ const InformationCards = () => {
   return (
     <div className="mt-5 flex flex-col gap-4">
       <CalorieCard calories={stat?.calories} caloriesFact={nutFact.calories} />
-      <div className="grid grid-cols-3 gap-3 justify-between">
+      <div className="grid grid-cols-3 gap-3">
         <Card
           goal={nutFact?.protein ?? 0}
           title={t("nutfact.protein")}

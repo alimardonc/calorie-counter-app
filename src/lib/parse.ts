@@ -1,7 +1,12 @@
-export function extractJson(text: string) {
-  const match = text.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error("No JSON object found");
-  const json = match[0];
-  const parsed = JSON.parse(json);
+import type { IFood } from "@/types";
+
+export function extractJson(text: string): IFood[] {
+  const cleaned = text
+    .replace(/```json/i, "")
+    .replace(/```/g, "")
+    .trim();
+
+  const parsed = JSON.parse(cleaned);
+
   return Array.isArray(parsed) ? parsed : [parsed];
 }

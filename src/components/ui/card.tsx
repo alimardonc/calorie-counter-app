@@ -14,11 +14,12 @@ const Card = ({ title, stat, icon, color, goal }: CardProps) => {
   const { t } = useTranslation();
   const isOver = stat > goal;
   const isFull = stat - goal > 0 && stat - goal <= 15;
+  console.log(getDisplayStat(stat, goal), title);
 
   return (
     <div
       className={cn(
-        "border rounded-md flex flex-col gap-2.5 w-full max-w-30 py-2 bg-card",
+        "border rounded-md flex flex-col gap-2.5 w-full py-2 bg-card",
         isOver && "bg-red-950",
         isFull && "bg-green-950",
       )}

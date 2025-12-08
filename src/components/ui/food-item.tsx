@@ -21,11 +21,11 @@ const FoodItem = ({ food }: IProps) => {
       <img
         src={food.image}
         alt={food.foodName}
-        className="w-28 h-full object-cover rounded-md"
+        className="w-30 h-full object-cover rounded-md"
       />
-      <div className="flex flex-col gap-2 w-full px-4 py-2.5">
+      <div className="flex flex-col gap-2 w-[calc(100%-120px)] px-4 py-2.5">
         <div className="flex justify-between w-full">
-          <p className="truncate max-w-54">{food.foodName}</p>
+          <p className="truncate w-[calc(100%-45px)]">{food.foodName}</p>
           <p className="font-bold text-sm text-muted-foreground">
             {new Date(food.createdAt).toLocaleTimeString([], {
               hour: "2-digit",

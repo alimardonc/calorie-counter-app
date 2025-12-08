@@ -4,7 +4,7 @@ import InformationCards from "@/components/information-cards";
 
 const Home = () => {
   return (
-    <div className="flex flex-col h-full gap-4">
+    <div className="flex flex-col h-full gap-2">
       <WeekCalendar />
       <InformationCards />
       <Foods />
