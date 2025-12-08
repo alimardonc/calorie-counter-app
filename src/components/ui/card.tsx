@@ -14,7 +14,6 @@ const Card = ({ title, stat, icon, color, goal }: CardProps) => {
   const { t } = useTranslation();
   const isOver = stat > goal;
   const isFull = stat - goal > 0 && stat - goal <= 15;
-  console.log(getDisplayStat(stat, goal), title);
 
   return (
     <div
