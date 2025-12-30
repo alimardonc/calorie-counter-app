@@ -4,8 +4,12 @@ import { useStore } from "@/store/use-store";
 const CaptureImage = () => {
   const analyzeFood = useStore((state) => state.analyzeFood);
 
-  const handleAnalyze = async (image: string, imageType: string) => {
-    analyzeFood(image, imageType, "");
+  const handleAnalyze = async (
+    image: string,
+    imageType: string,
+    prompt: string,
+  ) => {
+    analyzeFood(image, imageType, prompt);
   };
 
   return <ImageCapture isOpen={true} handleAnalyze={handleAnalyze} />;

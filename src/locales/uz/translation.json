@@ -102,5 +102,10 @@
     "confidence": "AI aniqligi",
     "ingredients": "Masalliqlar"
   },
-  "of_goal": "maqsaddan"
+  "of_goal": "maqsaddan",
+  "image-capture": {
+    "label": "Olingan ovqatni tavsiflang",
+    "placeholder": "Olingan ovqatni tavsiflang",
+    "shoot_again": "Boshqatdan olish"
+  }
 }

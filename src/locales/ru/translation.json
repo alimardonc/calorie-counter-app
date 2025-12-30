@@ -102,5 +102,10 @@
     "confidence": "Точность ИИ",
     "ingredients": "Ингредиенты"
   },
-  "of_goal": "из цели"
+  "of_goal": "из цели",
+  "image-capture": {
+    "label": "Ваша подсказка для еды",
+    "placeholder": "Опишите еду, которую вы сняли",
+    "shoot_again": "Снять заново"
+  }
 }

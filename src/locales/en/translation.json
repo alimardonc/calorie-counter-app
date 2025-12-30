@@ -102,5 +102,10 @@
     "confidence": "AI Accuracy",
     "ingredients": "Ingredients"
   },
-  "of_goal": "of Goal"
+  "of_goal": "of Goal",
+  "image-capture": {
+    "label": "Your prompt for the food",
+    "placeholder": "Describe the food you captured",
+    "shoot_again": "Shoot again"
+  }
 }

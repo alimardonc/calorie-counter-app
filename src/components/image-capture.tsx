@@ -6,17 +6,19 @@ import ScanCorners from "./ui/scan-corners";
 import { useTranslation } from "react-i18next";
 import { IoSparklesSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { XIcon } from "lucide-react";
+import { RefreshCcw, XIcon } from "lucide-react";
+import { Input } from "./ui/input";
 
 interface IProps {
   isOpen: boolean;
-  handleAnalyze: (image: string, imageType: string) => void;
+  handleAnalyze: (image: string, imageType: string, prompt: string) => void;
 }
 
 const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
   const cameraHandler = useRef<WebCameraHandler>(null);
   const [image, setImage] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [prompt, setPrompt] = useState("");
 
   async function handleCapture() {
     const file = await cameraHandler.current?.capture();
@@ -33,6 +35,11 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
       setImageFile(null);
     }
   }, [isOpen]);
+
+  const clear = () => {
+    setImage("");
+    setImageFile(null);
+  };
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -53,7 +60,7 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
           <img
             src={image}
             alt="Captured Image"
-            className="w-full h-120 rounded-[6px] object-cover"
+            className="w-full h-100 rounded-[6px] object-cover"
           />
         ) : (
           <div className="relative max-h-120 h-full w-full">
@@ -69,16 +76,30 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
           </div>
         )}
         {image ? (
-          <Button
-            onClick={() => {
-              handleAnalyze(image, imageFile?.type + "");
-              navigate("/");
-            }}
-            className="h-11"
-          >
-            <IoSparklesSharp />
-            {t("steps.analyze")}
-          </Button>
+          <div className="flex flex-col w-full gap-2 px-4">
+            <label>{t("image-capture.label")}</label>
+            <Input
+              placeholder={t("image-capture.placeholder")}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+            />
+            <div className="w-full flex items-center justify-between">
+              <Button onClick={clear} className="h-11" variant="secondary">
+                <RefreshCcw />
+                {t("image-capture.shoot_again")}
+              </Button>
+              <Button
+                onClick={() => {
+                  handleAnalyze(image, imageFile?.type + "", prompt);
+                  navigate("/");
+                }}
+                className="h-11"
+              >
+                <IoSparklesSharp />
+                {t("steps.analyze")}
+              </Button>
+            </div>
+          </div>
         ) : (
           <button
             onClick={handleCapture}
