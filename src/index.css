@@ -119,16 +119,6 @@ img {
     -webkit-user-drag: none;
 }
 
-html,
-body {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    touch-action: none;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: auto;
-}
-
 .corner {
     position: absolute;
     width: 40px;

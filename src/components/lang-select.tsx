@@ -11,16 +11,17 @@ const langs = ["uz 🇺🇿", "en 🇺🇸", "ru 🇷🇺"];
 
 const LanguageSelect = () => {
   const { i18n } = useTranslation();
+  console.log(i18n.language);
 
   return (
     <Select
-      defaultValue={i18n.language || "en"}
+      defaultValue={i18n.language.trim()}
       onValueChange={(value) => i18n.changeLanguage(value.slice(0, 2))}
     >
       <SelectTrigger>
         <SelectValue />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent defaultChecked>
         {langs.map((e) => (
           <SelectItem key={e} value={e.slice(0, 2)}>
             {e}
