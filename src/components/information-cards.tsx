@@ -11,7 +11,7 @@ import {
   proteinColor,
   ProteinIcon,
 } from "./constants/food";
-import { MacroCard } from "./ui/macro-card";
+import MacroCard from "./ui/macro-card";
 
 const InformationCards = () => {
   const userStats = useStore((state) => state.userStats);
