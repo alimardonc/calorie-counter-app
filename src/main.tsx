@@ -25,7 +25,7 @@ createRoot(document.getElementById("root")!).render(
       apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
       options={options}
     >
-      <div className="container mx-auto max-w-md w-full h-dvh">
+      <div className="container mx-auto max-w-md w-full h-[calc(var(--vh)*100)]">
         <BrowserRouter>
           <App />
         </BrowserRouter>
