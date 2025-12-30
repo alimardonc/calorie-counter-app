@@ -12,6 +12,8 @@ import {
   ProteinIcon,
 } from "./constants/food";
 import { MacroCard } from "./ui/macro-card";
+import { MacroCard2 } from "./ui/macro-card2";
+import { Beef } from "lucide-react";
 
 const InformationCards = () => {
   const userStats = useStore((state) => state.userStats);
@@ -42,7 +44,7 @@ const InformationCards = () => {
         <MacroCard
           goal={nutFact?.carbs ?? 0}
           title={t("nutfact.carbs")}
-          stat={stat?.carbs ?? 0}
+          stat={20}
           icon={<CarbIcon size={20} color={carbsColor} />}
           color="yellow"
         />

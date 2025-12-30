@@ -101,5 +101,6 @@
   "food_page": {
     "confidence": "Точность ИИ",
     "ingredients": "Ингредиенты"
-  }
+  },
+  "of_goal": "из цели"
 }

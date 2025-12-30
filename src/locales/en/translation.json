@@ -101,5 +101,6 @@
   "food_page": {
     "confidence": "AI Accuracy",
     "ingredients": "Ingredients"
-  }
+  },
+  "of_goal": "of Goal"
 }

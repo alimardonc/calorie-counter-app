@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { JSX } from "react";
+import { useTranslation } from "react-i18next";
 
 interface MacroCardProps {
   goal: number;
@@ -16,7 +17,7 @@ export function MacroCard({
   icon: Icon,
   color,
 }: MacroCardProps) {
-  const percentage = (stat / goal) * 100;
+  const percentage = Number(((stat / goal) * 100).toFixed(1));
   const isSuccess = percentage >= 100 && percentage <= 110;
   const isOver = percentage > 110;
 
@@ -65,6 +66,8 @@ export function MacroCard({
     },
   };
 
+  const { t } = useTranslation();
+
   const theme = isSuccess
     ? colorMap.success
     : isOver
@@ -74,14 +77,17 @@ export function MacroCard({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4.5 p-3 rounded-2xl border transition-all duration-500 min-w-[100px]",
+        "flex flex-col gap-2.5 p-3 rounded-2xl border transition-all duration-500 min-w-[100px]",
         theme.bg,
         theme.border,
         isSuccess && colorMap.success.cardGlow,
       )}
     >
       <div className="space-y-1">
-        <h3 className="text-3xl font-bold text-white tracking-tight">{goal}</h3>
+        <h3 className="text-2xl font-bold text-white tracking-tight">
+          {goal}
+          {t("g")}
+        </h3>
         <p className="text-[#a1a1aa] text-lg font-medium tracking-wide">
           {title}
         </p>
@@ -120,7 +126,7 @@ export function MacroCard({
             theme.text,
           )}
         >
-          {percentage}% of Goal
+          {percentage}% {t("of_goal")}
         </p>
       </div>
     </div>
