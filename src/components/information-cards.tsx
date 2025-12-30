@@ -37,21 +37,21 @@ const InformationCards = () => {
           title={t("nutfact.protein")}
           stat={stat?.protein ?? 0}
           icon={<ProteinIcon size={20} color={proteinColor} />}
-          color="red"
+          color={proteinColor}
         />
         <MacroCard
           goal={nutFact?.carbs ?? 0}
           title={t("nutfact.carbs")}
           stat={stat?.carbs ?? 0}
           icon={<CarbIcon size={20} color={carbsColor} />}
-          color="yellow"
+          color={carbsColor}
         />
         <MacroCard
           goal={nutFact?.fat ?? 0}
           title={t("nutfact.fat")}
           stat={stat?.fat ?? 0}
           icon={<FatIcon size={20} color={fatColor} />}
-          color="blue"
+          color={fatColor}
         />
       </div>
     </div>
