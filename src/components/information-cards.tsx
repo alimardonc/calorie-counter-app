@@ -12,8 +12,6 @@ import {
   ProteinIcon,
 } from "./constants/food";
 import { MacroCard } from "./ui/macro-card";
-import { MacroCard2 } from "./ui/macro-card2";
-import { Beef } from "lucide-react";
 
 const InformationCards = () => {
   const userStats = useStore((state) => state.userStats);
