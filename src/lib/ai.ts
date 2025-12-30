@@ -13,7 +13,7 @@ export default async function analyzeImage(
     You receive three inputs:
     - visionDescription: model's description of what is visible in the image
     - detectedText: any OCR text found on the image (may be empty)
-    - userPrompt: user text input (may be empty) - ${userPrompt}
+    - userPrompt: user text input (may be empty) - ${userPrompt}, if user prompt out of context of food just ignore it
 
     Your job:
     1. Determine the most likely single food item in the image.
