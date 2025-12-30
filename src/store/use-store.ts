@@ -89,6 +89,7 @@ export const useStore = create<CalorieStore>()(
           fat: 0,
           healthScore: 0,
           imageType: type,
+          userPrompt,
         };
 
         const prevList = get().foodStats[day] ?? [];

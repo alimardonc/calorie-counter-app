@@ -44,4 +44,5 @@ export interface IFood extends INutritionalFact {
   isLoading?: boolean;
   isRetry?: boolean;
   createdAt: string;
+  userPrompt?: string;
 }

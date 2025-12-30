@@ -65,7 +65,7 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
         ) : (
           <div className="relative max-h-120 h-full w-full">
             <WebCamera
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "90%", width: "100%" }}
               videoStyle={{ borderRadius: 5 }}
               captureMode="back"
               ref={cameraHandler}
@@ -83,7 +83,7 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             />
-            <div className="w-full flex items-center justify-between">
+            <div className="w-full flex items-center justify-between mt-2">
               <Button onClick={clear} className="h-11" variant="secondary">
                 <RefreshCcw />
                 {t("image-capture.shoot_again")}
@@ -103,7 +103,7 @@ const ImageCapture = ({ isOpen, handleAnalyze }: IProps) => {
         ) : (
           <button
             onClick={handleCapture}
-            className="size-14 bg-white rounded-full cursor-pointer"
+            className="size-14 bg-white rounded-full cursor-pointer mb-5"
           ></button>
         )}
       </div>
