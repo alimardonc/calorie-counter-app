@@ -42,7 +42,7 @@ const InformationCards = () => {
         <MacroCard
           goal={nutFact?.carbs ?? 0}
           title={t("nutfact.carbs")}
-          stat={20}
+          stat={stat?.carbs ?? 0}
           icon={<CarbIcon size={20} color={carbsColor} />}
           color="yellow"
         />

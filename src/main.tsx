@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./i18n.ts";
 import { PostHogProvider } from "posthog-js/react";
 import { registerSW } from "virtual:pwa-register";
+import ToastWrapper from "./components/toast-wrapper.tsx";
 
 registerSW({
   onNeedRefresh() {},
@@ -19,6 +20,7 @@ const options = {
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider defaultTheme="dark">
+    <ToastWrapper />
     <PostHogProvider
       apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
       options={options}

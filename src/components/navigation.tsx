@@ -29,9 +29,9 @@ const Navigation = () => {
       {data.map((e) => (
         <div key={e.id} className="w-full">
           {e.type === "btn" ? (
-            <div className="w-full flex justify-center items-center">
-              <NavLink to="/image-capture">
-                <Button variant="secondary" className="size-15 rounded-full">
+            <div className="relative size-15 w-full flex justify-center items-center">
+              <NavLink to="/image-capture" className="absolute size-18">
+                <Button variant="default" className="size-full rounded-full">
                   {e.icon}
                 </Button>
               </NavLink>

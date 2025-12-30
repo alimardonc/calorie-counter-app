@@ -39,6 +39,7 @@ const FoodPage = () => {
   const selectedDate = useCalendarStore((state) => state.selectedDate);
   const foodsState = useStore((state) => state.foodStats);
   const deleteFood = useStore((state) => state.deleteFood);
+  const retry = useStore((state) => state.retryAnalyzeFood);
 
   const [hydrated, setHydrated] = useState(false);
 
@@ -66,7 +67,7 @@ const FoodPage = () => {
   }
 
   return (
-    <div className="relative bg-background flex flex-col h-screen">
+    <div className="relative bg-background flex flex-col h-dvh">
       <div className="absolute top-2.5 px-2.5 w-full flex justify-between items-center">
         <Button
           className="rounded-full size-12.5"
@@ -212,7 +213,11 @@ const FoodPage = () => {
 
       {/* Кнопки */}
       <div className="grid grid-cols-2 gap-2 py-3 px-4">
-        <Button className="h-11 rounded-full" variant="outline">
+        <Button
+          className="h-11 rounded-full"
+          variant="outline"
+          onClick={() => retry(food.id, "")}
+        >
           <IoSparklesSharp />
           {t("fix_results")}
         </Button>

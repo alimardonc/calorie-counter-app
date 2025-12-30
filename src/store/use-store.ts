@@ -6,6 +6,7 @@ import { getNutFact } from "@/lib/utils";
 import { v4 as uuid } from "uuid";
 import type { IFood, INutritionalFact, IUserInfo } from "@/types";
 import { useCalendarStore } from "./use-calendar";
+import toast from "react-hot-toast";
 
 interface CalorieStore {
   user: IUserInfo | null;
@@ -115,6 +116,7 @@ export const useStore = create<CalorieStore>()(
             }),
           );
         } catch (error) {
+          toast.error("Analyzing failed");
           get().updateFood(tempId, {
             isLoading: false,
             isRetry: true,
