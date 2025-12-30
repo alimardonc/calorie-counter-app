@@ -18,13 +18,20 @@ const ProfileStepper = () => {
   const [welcome, setWelcome] = useState(true);
   const [selected, setSelected] = useState<ISelected>({ weeklykg: 0.8 });
   const { t } = useTranslation();
-  const steps = getSteps();
+  const steps = getSteps(selected.goal);
 
   useEffect(() => {
-    if (selected?.goal == "Maintenance") {
-      setSelected((prev) => ({ ...prev, ["weightgoal"]: prev.weight }));
-    } else {
-      setSelected((prev) => ({ ...prev, ["weightgoal"]: 0 }));
+    const newSteps = getSteps(selected.goal);
+    if (step >= newSteps.length) {
+      setStep(newSteps.length - 1);
+    }
+
+    if (selected.goal === "Maintenance") {
+      setSelected((prev) => ({
+        ...prev,
+        weightgoal: prev.weight,
+        weeklykg: undefined,
+      }));
     }
   }, [selected.goal]);
 
@@ -147,7 +154,7 @@ const ProfileStepper = () => {
       ) : currentStep.type == "slider" && !isMaintenance ? (
         <div className="flex flex-col gap-5 text-center">
           <p className="font-bold text-2xl">
-            {selected[currentStep.id]} {t("kg")}
+            {selected[currentStep.id] ?? 0.8} {t("kg")}
           </p>
           <Slider
             defaultValue={[selected.weeklykg ?? 0.8]}

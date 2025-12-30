@@ -1,4 +1,3 @@
-import Card from "@/components/ui/card";
 import { useStore } from "@/store/use-store";
 import { useCalendarStore } from "@/store/use-calendar";
 import { useEffect } from "react";
@@ -12,6 +11,7 @@ import {
   proteinColor,
   ProteinIcon,
 } from "./constants/food";
+import { MacroCard } from "./ui/macro-card";
 
 const InformationCards = () => {
   const userStats = useStore((state) => state.userStats);
@@ -32,26 +32,26 @@ const InformationCards = () => {
     <div className="mt-5 flex flex-col gap-4">
       <CalorieCard calories={stat?.calories} caloriesFact={nutFact.calories} />
       <div className="grid grid-cols-3 gap-3">
-        <Card
+        <MacroCard
           goal={nutFact?.protein ?? 0}
           title={t("nutfact.protein")}
           stat={stat?.protein ?? 0}
           icon={<ProteinIcon size={20} color={proteinColor} />}
-          color={proteinColor}
+          color="red"
         />
-        <Card
+        <MacroCard
           goal={nutFact?.carbs ?? 0}
           title={t("nutfact.carbs")}
           stat={stat?.carbs ?? 0}
           icon={<CarbIcon size={20} color={carbsColor} />}
-          color={carbsColor}
+          color="yellow"
         />
-        <Card
+        <MacroCard
           goal={nutFact?.fat ?? 0}
           title={t("nutfact.fat")}
           stat={stat?.fat ?? 0}
           icon={<FatIcon size={20} color={fatColor} />}
-          color={fatColor}
+          color="blue"
         />
       </div>
     </div>
