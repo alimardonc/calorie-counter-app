@@ -4,7 +4,6 @@ import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -21,12 +20,12 @@ export default defineConfig({
         theme_color: "#0a0a0a",
         icons: [
           {
-            src: "/icon.png",
+            src: "/icon2.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/icon.png",
+            src: "/icon2.png",
             sizes: "512x512",
             type: "image/png",
           },
